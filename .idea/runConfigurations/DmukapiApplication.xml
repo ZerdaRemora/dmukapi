@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DmukapiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="com.bclers.dmukapi.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.bclers.dmukapi.DmukapiApplication" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

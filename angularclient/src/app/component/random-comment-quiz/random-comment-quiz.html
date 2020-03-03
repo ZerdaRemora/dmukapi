@@ -1,0 +1,52 @@
+<div class="text-center">
+  <div *ngIf="safeToDisplay()">
+    <p>
+      <strong>Message: </strong>
+      <span>{{currentCmt.body}}</span>
+      <br/>
+
+      <strong>Author: </strong>
+      <span>{{currentCmt.author}}</span>
+      <br/>
+
+      <strong *ngIf="beenAnswered">Score: </strong>
+      <span *ngIf="beenAnswered">{{currentCmt.score}}</span>
+
+    </p>
+    <div class="new-line">
+      <button mat-raised-button type="submit" class="box-selection-spacing" [color]="'guess'"
+              [disabled]="beenAnswered" (click)="guessBBC()" *ngIf="displayBBC">BBC</button>
+      <button mat-raised-button type="submit" class="box-selection-spacing" [color]="'guess'"
+              [disabled]="beenAnswered" (click)="guessDM()" *ngIf="displayDM">Daily Mail</button>
+      <button mat-raised-button type="submit" class="box-selection-spacing" [color]="'guess'"
+              [disabled]="beenAnswered" (click)="guessUKP()" *ngIf="displayUKP">r/UKPolitics</button>
+    </div>
+  </div>
+  <div *ngIf="!safeToDisplay()" class="new-line">
+    <strong>Error in retrieving comment information</strong>
+  </div>
+
+  <div *ngIf="beenAnswered && wasCorrect" class="new-line">
+    <p style="color: green; text-align: center;">
+      <strong>
+        CORRECT!
+      </strong>
+    </p>
+  </div>
+
+  <div *ngIf="beenAnswered && !wasCorrect" class="new-line">
+    <p style="color: red; text-align: center;">
+      <strong>
+        WRONG!
+      </strong>
+    </p>
+  </div>
+
+  <div class="new-line">
+  <button mat-raised-button type="submit" class="box-selection-spacing"
+          color="warn" (click)="exitQuiz()">Return!</button>
+
+  <button mat-raised-button type="submit" class="box-selection-spacing"
+          color="primary" *ngIf="beenAnswered" (click)="nextComment()">Next</button>
+  </div>
+</div>

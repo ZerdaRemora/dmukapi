@@ -1,0 +1,50 @@
+<div class="text-center" *ngIf="!quizInProgress">
+  <button mat-fab color="primary" data-toggle="collapse" href="#quiz-options"
+          role="button" aria-expanded="false" aria-controls="quiz-options">Start
+  </button>
+
+
+  <section id="quiz-options" class="collapse quiz-margin">
+    <form (ngSubmit)="quizSubmit()">
+      <div>
+        <label class="quiz-margin">Please select sources for the quiz:</label>
+      </div>
+
+      <div>
+        <mat-checkbox name="dmchecked" class="checkbox-margin" (change)="checkValidity()" [(ngModel)]="dailyMailChecked">Daily Mail</mat-checkbox>
+        <mat-checkbox name="ukpchecked" class="checkbox-margin" (change)="checkValidity()" [(ngModel)]="uKPoliticsChecked">UKPolitics
+        </mat-checkbox>
+        <mat-checkbox name="bbcchecked" class="checkbox-margin" (change)="checkValidity()" [(ngModel)]="bbcChecked">BBC</mat-checkbox>
+      </div>
+
+      <div>
+        <mat-form-field>
+          <mat-label>Number of comments to guess:</mat-label>
+          <input matInput type="number" name="num" (ngModelChange)="checkValidity()" [(ngModel)]="commentsToGuess"/>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-card-actions>
+          <button mat-raised-button type="submit" style="margin: auto;" name="submitbtn" id="submit" color="primary" [disabled]="!isFormValid">
+            <a *ngIf="!loadingComments">
+              Begin!
+            </a>
+
+            <a *ngIf="loadingComments">
+              <mat-label>Loading...</mat-label>
+              <mat-spinner
+                style="float: right; margin-left: 10px; margin-top: 8px;"
+                diameter="20"
+                color="primary">
+              </mat-spinner>
+            </a>
+          </button>
+        </mat-card-actions>
+      </div>
+    </form>
+  </section>
+</div>
+<div *ngIf="quizInProgress">
+<random-comment-quiz (exitQuizEmitter)="quizComplete($event)"></random-comment-quiz>
+</div>

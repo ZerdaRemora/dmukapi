@@ -1,0 +1,16 @@
+$dailyMailColour: #3d60ff;
+$ukrColour: #ff7029;
+
+#title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dailyMailText {
+  color: $dailyMailColour;
+}
+
+#ukRedditText {
+  color: $ukrColour;
+}

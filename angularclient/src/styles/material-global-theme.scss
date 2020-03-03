@@ -1,0 +1,60 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$primary: mat-palette($mat-blue);
+$accent: mat-palette($mat-blue-grey);
+$warn: mat-palette($mat-red);
+$theme: mat-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($theme);
+
+.mat-guess {
+  background-color: orange;
+}
+
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #ffffff !important;
+}
+
+.dark-theme {
+  color: $light-primary-text;
+  $dark-primary: mat-palette($mat-deep-purple);
+  $dark-accent: mat-palette($mat-cyan, A400, A100, A700);
+  $dark-warn: mat-palette($mat-amber);
+  $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
+  /*
+    Inverse bootstrap colours for when we're in dark mode.
+    E.g. bg-light class now shows a dark colour.
+    This saves changing all bootstrap classes when the theme switches.
+   */
+  .bg-light {
+    background-color: #303030 !important;
+  }
+
+  .border-dark {
+    border-color: #f8f9fa !important;
+  }
+
+  .mat-guess {
+    background-color: darkcyan !important;
+  }
+
+  .table-bg {
+    background-color: #454545 !important;
+  }
+
+  /*
+    DataTables dark mode styling:
+   */
+  .dataTables_length {
+    color: $light-primary-text !important;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: $light-primary-text !important;
+  }
+
+  @include angular-material-theme($dark-theme);
+}

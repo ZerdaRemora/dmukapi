@@ -1,0 +1,84 @@
+<form action="/commentparse" method="post" class="new-line" (ngSubmit)="onCmtSubmit()">
+
+  <mat-checkbox [(ngModel)]="useCustomCB" class="center" name="isCustomURL" (ngModelChange)="resetVariables()">Use
+    Custom URL
+  </mat-checkbox>
+
+  <div [hidden]="useCustomCB">
+
+    <div class="center">
+      <mat-form-field>
+        <mat-label>News URL:</mat-label>
+        <mat-select [(ngModel)]="endpointType" name="endpoint" (ngModelChange)="grabArticles()">
+          <mat-option *ngFor="let entries of endPointTypes | keyvalue" value={{entries.key}}>
+            {{entries.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="center">
+      <mat-form-field class="wide-fields" *ngIf="listRetrieved">
+        <mat-label>Current Articles:</mat-label>
+        <mat-select [(ngModel)]="endpointUrl" name="currentArticles">
+          <mat-option *ngFor="let entries of fetchedArticles | keyvalue" [value]="entries.key" title="{{entries.key}}">
+            {{entries.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+  <div [hidden]="!useCustomCB">
+
+    <div class="center">
+      <mat-form-field class="wide-fields">
+        <mat-label>Custom Comment URL:</mat-label>
+        <input matInput type="text" name="url" [(ngModel)]="customEndpointUrl" (blur)="checkCustomURL()"/>
+      </mat-form-field>
+    </div>
+
+    <div class="center article-confirmation">
+      <div id="confirmationDiv" *ngIf="articleFound">
+        <a>Article Found! 😊</a>
+      </div>
+      <div *ngIf="!articleFound">
+        <a>Article Not Found 😢</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div [hidden]="!safeToProceed()">
+
+    <div class="center">
+      <mat-form-field class="sort-spacing">
+        <mat-label>Sort Type:</mat-label>
+        <mat-select [(ngModel)]="sortType" name="sorttype">
+          <mat-option *ngFor="let entries of sortTypes | keyvalue" [value]="entries.key" title="{{entries.key}}">
+            {{entries.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Sort Order:</mat-label>
+        <mat-select [(ngModel)]="sortOrder" name="sortorder">
+          <mat-option *ngFor="let entries of sortOrders | keyvalue" [value]="entries.key" title="{{entries.key}}">
+            {{entries.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="center">
+      <mat-card-actions>
+        <button mat-raised-button type="submit" style="margin: auto;" color="primary">Find Comments</button>
+      </mat-card-actions>
+    </div>
+
+  </div>
+
+</form>
+

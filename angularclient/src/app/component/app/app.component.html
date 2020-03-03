@@ -1,0 +1,24 @@
+<div [ngClass]="{'dark-theme': darkTheme | async}" class="max-height">
+  <div class="mat-app-background max-height" style="overflow-y: scroll;">
+
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <ul class="nav">
+          <li><h1>DMUK</h1></li>
+          <li><a routerLink="">Home</a></li>
+          <li><a routerLink="/admin">Admin</a></li>
+        </ul>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div id="dark-mode-section" style="float: right; margin: 5px">
+      <mat-slide-toggle [(ngModel)]="darkToggle" (change)="toggleDarkTheme($event.checked)">Dark theme
+      </mat-slide-toggle>
+      <div>
+        <health-check></health-check>
+      </div>
+    </div>
+
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="text-center new-line">
+
+  <form action="/autofetch" method="post" (ngSubmit)="onSubmit()">
+
+      <div>
+        <label class="general-margin">Please select the sources to grab comments from</label>
+      </div>
+      <div class="new-line">
+        <mat-checkbox class="checkbox-margin" name="dm" [(ngModel)]="autoScraperChecks.autoDailyMailChecked">Daily Mail</mat-checkbox>
+        <mat-checkbox class="checkbox-margin" name="ukp" [(ngModel)]="autoScraperChecks.autoUKPoliticsChecked">UKPolitics</mat-checkbox>
+        <mat-checkbox class="checkbox-margin" name="bbc" [(ngModel)]="autoScraperChecks.autoBBCChecked">BBC</mat-checkbox>
+      </div>
+      <div>
+        <mat-card-actions>
+          <button mat-raised-button type="submit" style="margin: auto;" color="primary">Fetch Comments</button>
+        </mat-card-actions>
+      </div>
+      <div [hidden]="!autoScraperChecks.sourceError">
+        <div id="confirmationDiv" >
+          <a>Must select at least 1 source</a>
+        </div>
+      </div>
+  </form>
+</div>

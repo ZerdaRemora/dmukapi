@@ -1,0 +1,104 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.0.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+}
+
+group = 'com.bclers'
+version = '0.4'
+sourceCompatibility = '1.8'
+
+def angularDir = "$projectDir/angularclient"
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.session:spring-session-core'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.jsoup:jsoup:1.12.1'
+    implementation 'net.dean.jraw:JRAW:1.1.0'
+    implementation 'org.json:json:20190722'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'org.postgresql:postgresql'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        exclude group: 'org.json', module: 'json'
+    }
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["$angularDir/dist", "$projectDir/src/main/resources"]
+        }
+    }
+}
+
+jar {
+    enabled = true
+    manifest {
+        attributes(
+                'Main-Class': 'com.bclers.dmukapi.DmukapiApplication'
+        )
+    }
+}
+
+task buildAngular(type: Exec) {
+    workingDir "$angularDir"
+    inputs.dir "$angularDir"
+    group = BasePlugin.BUILD_GROUP
+
+    if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
+        commandLine "ng.cmd", "build"
+    } else {
+        commandLine "ng", "build"
+    }
+}
+
+task installAngular(type: Exec) {
+    workingDir "$angularDir"
+    inputs.dir "$angularDir"
+    group = BasePlugin.BUILD_GROUP
+
+    if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
+        commandLine "npm.cmd", "install"
+    } else {
+        commandLine "npm", "install"
+    }
+}
+
+bootJar {
+    archiveFileName = 'dmukapi.jar'
+}
+
+task copyJar(type: Copy) {
+    from bootJar
+    into 'docker/deployment'
+}
+
+copyJar.dependsOn bootJar

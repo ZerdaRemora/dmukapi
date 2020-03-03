@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Dev Stack" type="CompoundRunConfigurationType">
+    <toRun name="DmukapiApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="Frontend Dev Server" type="js.build_tools.npm" />
+    <toRun name="Postgres Dev DB" type="docker-deploy" />
+    <method v="2" />
+  </configuration>
+</component>

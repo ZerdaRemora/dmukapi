@@ -1,0 +1,37 @@
+name: Docker Publish Dev
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        if: github.event.pull_request.merged == true
+
+      - name: Set up JDK 1.8
+        if: github.event.pull_request.merged == true
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Build with Gradle
+        if: github.event.pull_request.merged == true
+        run: ./gradlew copyJar
+
+      - name: Docker Login
+        if: github.event.pull_request.merged == true
+        run: docker login -u ${{ github.actor }} -p ${{ github.token}} docker.pkg.github.com
+
+      - name: Build Docker Image
+        if: github.event.pull_request.merged == true
+        working-directory: docker/deployment
+        run: docker build -t docker.pkg.github.com/apple103/dmukapi/dmukapi:develop .
+
+      - name: Publish Docker Image
+        if: github.event.pull_request.merged == true
+        working-directory: docker/deployment
+        run: docker push docker.pkg.github.com/apple103/dmukapi/dmukapi:develop

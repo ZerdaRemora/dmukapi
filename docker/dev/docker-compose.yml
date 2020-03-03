@@ -1,0 +1,17 @@
+version: '3'
+services:
+  postgres:
+    container_name: pg-dev
+    image: postgres:12.2-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./structure.sql:/docker-entrypoint-initdb.d/structure.sql
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:

@@ -1,0 +1,4 @@
+reddit.username=<username>
+reddit.clientid=<client_id>
+reddit.clientsecret=<client_secret>
+reddit.redirect=<api_redirect_url> # Not used but still required by the reddit API.

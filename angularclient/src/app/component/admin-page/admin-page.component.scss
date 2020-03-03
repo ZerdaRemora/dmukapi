@@ -1,0 +1,8 @@
+/*
+  Work around to hide 'No records found' row when table is populated.
+  Taken from: https://github.com/l-lin/angular-datatables/issues/1284#issuecomment-469664539
+ */
+::ng-deep .odd{
+  display: none
+}
+
