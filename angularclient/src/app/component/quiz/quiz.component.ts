@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {RandomCommentService} from "../random-comment-quiz/random-comment-service";
 import {RandomCommentQuiz} from "../random-comment-quiz/random-comment-quiz";
 

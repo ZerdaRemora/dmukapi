@@ -6,30 +6,59 @@
   <mat-tab-group dynamicHeight="true" mat-align-tabs="center">
     <mat-tab label="Comment Viewing">
       <div id="comment-table">
-        <table datatable [dtOptions]="dtOptions" class="hover row-border" style="width: 100%">
-          <thead>
-          <tr>
-            <th>Comment ID</th>
-            <th>Author</th>
-            <th>Body</th>
-            <th>Score</th>
-            <th>Article Title</th>
-            <th>Source</th>
-            <th>Date</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let cmt of commentList" class="table-bg">
-            <td>{{cmt.id}}</td>
-            <td>{{cmt.author}}</td>
-            <td>{{cmt.body}}</td>
-            <td>{{cmt.score}}</td>
-            <td>{{cmt.articleTitle}}</td>
-            <td>{{cmt.commentSource}}</td>
-            <td>{{cmt.date | date: 'dd/MM/yyyy'}}</td>
-          </tr>
-          </tbody>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%">
+          <!-- Comment ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Comment ID</th>
+            <td mat-cell *matCellDef="let cmt">{{cmt.id}}</td>
+          </ng-container>
+
+          <!-- Author Column -->
+          <ng-container matColumnDef="author">
+            <th mat-header-cell *matHeaderCellDef>Author</th>
+            <td mat-cell *matCellDef="let cmt">{{cmt.author}}</td>
+          </ng-container>
+
+          <!-- Body Column -->
+          <ng-container matColumnDef="body">
+            <th mat-header-cell *matHeaderCellDef>Body</th>
+            <td mat-cell *matCellDef="let cmt">{{cmt.body}}</td>
+          </ng-container>
+
+          <!-- Score Column -->
+          <ng-container matColumnDef="score">
+            <th mat-header-cell *matHeaderCellDef>Score</th>
+            <td mat-cell *matCellDef="let cmt">{{cmt.score}}</td>
+          </ng-container>
+
+          <!-- Article Title Column -->
+          <ng-container matColumnDef="articleTitle">
+            <th mat-header-cell *matHeaderCellDef>Article Title</th>
+            <td mat-cell *matCellDef="let cmt">{{cmt.articleTitle}}</td>
+          </ng-container>
+
+          <!-- Source Column -->
+          <ng-container matColumnDef="commentSource">
+            <th mat-header-cell *matHeaderCellDef>Source</th>
+            <td mat-cell *matCellDef="let cmt">{{cmt.commentSource}}</td>
+          </ng-container>
+
+          <!-- Date Column -->
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let cmt">{{cmt.date | date: 'dd/MM/yyyy'}}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+
+        <mat-paginator [length]="totalRecords"
+                       [pageSize]="pageSize"
+                       [pageSizeOptions]="[5, 10, 25, 100]"
+                       (page)="onPageChange($event)"
+                       showFirstLastButtons>
+        </mat-paginator>
       </div>
     </mat-tab>
 

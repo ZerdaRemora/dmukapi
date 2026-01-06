@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Comment} from "../../model/Comment";
-import {APIResponse} from "../../model/APIResponse";
-import {DataTableResponse} from "../../model/DataTableResponse";
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'admin-page',
@@ -11,43 +11,50 @@ import {DataTableResponse} from "../../model/DataTableResponse";
 })
 export class AdminPageComponent implements OnInit {
   title = 'admin-page';
-  dtOptions: DataTables.Settings = {};
-  commentList: Comment[];
 
-  constructor(private http: HttpClient) {}
+  displayedColumns: string[] = ['id', 'author', 'body', 'score', 'articleTitle', 'commentSource', 'date'];
+  dataSource: MatTableDataSource<Comment>;
 
-  ngOnInit(): void
-  {
-    this.dtOptions = {
-      scrollX: true,
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      searching: false,
-      ajax: (params, callback) => {
-        this.http.post<DataTableResponse>("/api/filtercomments", params)
-          .subscribe((response) => {
-            this.commentList = response.data;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-            callback({
-              recordsTotal: response.recordsTotal,
-              recordsFiltered: response.recordsFiltered,
-              data: []
-            });
+  totalRecords = 0;
+  pageSize = 10;
+  pageIndex = 0;
 
-
-          }, (error) => console.log(error));
-      },
-      columns: [
-        { data: 'id', width: '5%' },
-        { data: 'author', width: '15%' },
-        { data: 'body', width: '45%' },
-        { data: 'score', width: '5%' },
-        { data: 'articleTitle', width: '15%' },
-        { data: 'commentSource', width: '5%' },
-        { data: 'date', width: '10%' }
-      ]
-    };
+  constructor(private http: HttpClient) {
+    this.dataSource = new MatTableDataSource<Comment>([]);
   }
 
+  ngOnInit(): void {
+    this.loadComments();
+  }
+
+  loadComments(): void {
+    const params = {
+      draw: 1,
+      start: this.pageIndex * this.pageSize,
+      length: this.pageSize,
+      search: {value: '', regex: false},
+      order: [{column: 0, dir: 'asc'}],
+      columns: this.displayedColumns.map((col, i) => ({
+        data: col,
+        name: '',
+        searchable: false,
+        orderable: false,
+        search: {value: '', regex: false}
+      }))
+    };
+
+    this.http.post<any>("/api/filtercomments", params)
+      .subscribe((response) => {
+        this.dataSource.data = response.data;
+        this.totalRecords = response.recordsTotal;
+      }, (error) => console.log(error));
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadComments();
+  }
 }

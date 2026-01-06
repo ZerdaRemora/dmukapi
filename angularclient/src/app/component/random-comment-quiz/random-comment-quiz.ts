@@ -43,9 +43,9 @@ export class RandomCommentQuiz implements OnInit {
   {
     if (response.statusCode == "OK") {
       let sourcesMap = new Map(Object.entries(response.payload));
-      this.displayBBC = sourcesMap.get('bbc');
-      this.displayDM = sourcesMap.get('dailymail');
-      this.displayUKP = sourcesMap.get('ukpolitics');
+      this.displayBBC = (sourcesMap.get('bbc') as boolean) ?? false;
+      this.displayDM = (sourcesMap.get('dailymail') as boolean) ?? false;
+      this.displayUKP = (sourcesMap.get('ukpolitics') as boolean) ?? false;
     }
   }
 
